@@ -471,10 +471,6 @@ def datasets_available(ds_type):
     result = logic.get_action(u'package_search')(context, data_dict)
     return result['results']
 
-@helper
-def koko():
-    log.warning('Hello')
-
 #@helper
 def create_Tags(tags):
     user = tk.get_action('get_site_user')({'ignore_auth': True}, {})
