@@ -1,0 +1,35 @@
+<section class="module module-narrow module-shallow">
+    <h2 class="module-heading">
+        <i class="fa fa-filter"></i>
+        Kokos Tags
+    </h2>
+    <nav aria-label="Koko" id="level_21">
+        <ul class="list-unstyled nav nav-simple nav-facet">
+            <!-- Dasa muss ich noch mal ersetzen durch die richtigen Daten -->
+            {% set field = {"deutschland": {"niedersachsen": ["braunschweig"],"sachsen": ["dresden"]},"svergie": {"Dalarna": ["Mora","Åre"],"Gävleborg": ["Gävle"],"Östergötland": ["Vadstena"]}} %}
+            {%- for key, value in field.items() recursive %}
+            {#%- for key, value in field["choise_koko"].items() recursive %#}
+            <details>
+                <summary><li class="nav-item"><a href="{{ key }}">
+                    <span class="item-label">{{ key }}</span>
+                    <span class="hidden separator"> - </span>
+                    <span class="item-count badge"></span>
+                </a></li></summary>
+                {%- if value is mapping %}
+                <ul class="list-unstyled nav nav-simple nav-facet">{{ loop(value.items()) }}</ul>
+                {% else %}
+                <ul class="list-unstyled nav nav-simple nav-facet">
+                    {% for v in value %}
+                    <li class="nav-item"><a href="{{ v }}">
+                        <span class="item-label">{{ v }}</span>
+                        <span class="hidden separator"> - </span>
+                        <span class="item-count badge"></span>
+                    </a></li>
+                    {% endfor %}
+                </ul>
+                {%- endif %}
+            </details>
+            {%- endfor %}
+        </ul>
+    </nav>
+</section>

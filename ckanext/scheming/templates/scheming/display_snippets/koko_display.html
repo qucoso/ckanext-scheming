@@ -1,0 +1,7 @@
+<ul class="tag-list">
+    {% for data in data[field.field_name][1:-1].split(',')  %}
+    <li>
+        <a class="tag" href="/dataset/?level={{ data }}">{{ data }}</a>
+    </li>
+    {% endfor %}
+</ul>

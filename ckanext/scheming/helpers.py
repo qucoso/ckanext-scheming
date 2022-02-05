@@ -8,6 +8,8 @@ import six
 import logging
 
 import ckan.logic as logic
+# I have added this library to create the facets for the dataset search
+import ckan.plugins.toolkit as tk
 
 from jinja2 import Environment
 from ckantoolkit import config, _
@@ -468,3 +470,21 @@ def datasets_available(ds_type):
     data_dict = { u'fq': ds_type }
     result = logic.get_action(u'package_search')(context, data_dict)
     return result['results']
+
+@helper
+def koko():
+    log.warning('Hello')
+
+#@helper
+def create_Tags(tags):
+    user = tk.get_action('get_site_user')({'ignore_auth': True}, {})
+    context = {'user': user['name']}
+    try:
+        data = {'id': 'country_codes'}
+        tk.get_action('vocabulary_show')(context, data)
+    except tk.ObjectNotFound:
+        data = {'name': 'country_codes'}
+        vocab = tk.get_action('vocabulary_create')(context, data)
+        for tag in (u'svergie', u'deutschland'):
+            data = {'name': tag, 'vocabulary_id': vocab['id']}
+            tk.get_action('tag_create')(context, data)

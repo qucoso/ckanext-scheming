@@ -207,8 +207,11 @@ class SchemingDatasetsPlugin(p.SingletonPlugin, DefaultDatasetForm,
     SCHEMA_OPTION = 'scheming.dataset_schemas'
     FALLBACK_OPTION = 'scheming.dataset_fallback'
     SCHEMA_TYPE_FIELD = 'dataset_type'
-    SCHEMA_FILTER_ORDER = ['organization', 'groups', 'tags', 'res_format', 'license_id']
-    SCHEMA_FILTER_TITLES = [p.toolkit._('Organizations'), p.toolkit._('Groups'), p.toolkit._('Tags'), p.toolkit._('Formats'), p.toolkit._('License')]
+    # this the name of the Field
+    SCHEMA_FILTER_ORDER = ['organization', 'groups', 'tags', 'res_format', 'license_id', 'level']
+    # this is the label of the field
+    SCHEMA_FILTER_TITLES = [p.toolkit._('Organizations'), p.toolkit._('Groups'), p.toolkit._('Tags'), p.toolkit._('Formats'), p.toolkit._('License')], p.toolkit._('SIKKOs_Tags')
+    
 
     @classmethod
     def _store_instance(cls, self):
@@ -226,10 +229,14 @@ class SchemingDatasetsPlugin(p.SingletonPlugin, DefaultDatasetForm,
     def resource_form(self):
         return 'scheming/package/snippets/resource_form.html'
 
+    # def search_template(self):
+        # return 'scheming/package/snippets/search_form.html'
+
     def package_types(self):
         return list(self._schemas)
 
     def get_filter_config(self):
+        # this iis the function to add the facets to the ckan
         filter_order = config.get('ckanext.scheming.filter_order', '')
         filter_titles = config.get('ckanext.scheming.filter_titles', '')
         if filter_order and filter_titles:
@@ -246,7 +253,7 @@ class SchemingDatasetsPlugin(p.SingletonPlugin, DefaultDatasetForm,
         return facets_ordered
     
     def dataset_facets(self, facets_dict, package_type):
-        #facets_dict['type'] = p.toolkit._('Type')        
+        facets_dict['level'] = p.toolkit._('SIKKOs_Tags')        
         # Return the updated facet dict.
         return self.get_filter_config()
             
