@@ -13,7 +13,7 @@ is_required=h.scheming_field_required(field)
 
 {% call form.input_block(id, label, error, classes, is_required=is_required) %}
 <div class="controls" id="selections">
-    <select data-level="0" class="col form-control" form="dataset-edit" name="level" onchange="updateSelection(this);">
+    <select data-level="0" class="col form-control" form="dataset-edit" name="level0" onchange="updateSelection(this);">
         <option value="">Wähle aus!</option>
         {%- for key, values in field["choise_koko"].items() -%}
         <option value={{key}}>{{key}}</option>
@@ -57,7 +57,8 @@ is_required=h.scheming_field_required(field)
             newSelect.setAttribute("class", "col form-control")
             newSelect.setAttribute("onchange", "updateSelection(this);")
             newSelect.setAttribute("form", "dataset-edit")
-            newSelect.setAttribute("name", "level");
+            //newSelect.setAttribute("name", "level");
+            newSelect.setAttribute("name",  "level" + String(level + 1));
 
             newOption = document.createElement("option");
             newOption.innerHTML = "Wähle aus!";

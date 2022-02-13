@@ -7,15 +7,18 @@
                 Kokos Tags
             </h2>
             <nav aria-label="Koko" id="level_21">
-                <ul class="list-unstyled nav nav-simple nav-facet">
+                <!-- <ul class="list-unstyled nav nav-simple nav-facet"> -->
+                <ul>
                     <!-- Dasa muss ich noch mal ersetzen durch die richtigen Daten -->
-                    {% set field = {"deutschland": {"niedersachsen": ["braunschweig"],"sachsen": ["dresden"]},"svergie": {"Dalarna": ["Mora","Åre"],"Gävleborg": ["Gävle"],"Östergötland": ["Vadstena"]}} %}
+                    {% set field = {"deutschland": {"niedersachsen": ["braunschweig"],"sachsen": ["dresden"]},"svergie":
+                    {"Dalarna": ["Mora","Åre"],"Gävleborg": ["Gävle"],"Östergötland": ["Vadstena"]}} %}
                     {%- for key, value in field.items() recursive %}
                     {#%- for key, value in field["choise_koko"].items() recursive %#}
                     <details>
                         <summary>
-                            <li class="nav-item">
-                                <a href="{{ key }}" title="">
+                            <li>
+                                <!-- class="nav-item" -->
+                                <a class="nav-item" href="?level={{ key }}" title="">
                                     <span class="item-label">{{ key }}</span>
                                     <span class="hidden separator"> - </span>
                                     <span class="item-count badge">7</span>
@@ -23,15 +26,19 @@
                             </li>
                         </summary>
                         {%- if value is mapping %}
-                        <ul class="list-unstyled nav nav-simple nav-facet">{{ loop(value.items()) }}</ul>
+                        <!-- class="list-unstyled nav nav-simple nav-facet" -->
+                        <ul>{{ loop(value.items()) }}</ul>
                         {% else %}
-                        <ul class="list-unstyled nav nav-simple nav-facet">
+                        <!-- class="list-unstyled nav nav-simple nav-facet" -->
+                        <ul>
                             {% for v in value %}
-                            <li class="nav-item"><a href="{{ v }}">
-                                <span class="item-label">{{ v }}</span>
-                                <span class="hidden separator"> - </span>
-                                <span class="item-count badge"></span>
-                            </a></li>
+                            <li>
+                                <a class="nav-item" href="?level{{ v }}">
+                                    <span class="item-label">{{ v }}</span>
+                                    <span class="hidden separator"> - </span>
+                                    <span class="item-count badge">6</span>
+                                </a>
+                            </li>
                             {% endfor %}
                         </ul>
                         {%- endif %}
@@ -42,3 +49,20 @@
         </section>
     </div>
 </div>
+<style>
+    summary {
+        position: relative;
+        list-style: circle;
+    }
+    details {
+        color:#A5B65A;
+    }
+    details[open]{
+        color:#489CD4;
+    }
+    /* .nav-item{
+        display: block;
+        padding: 10px 0px;
+    } */
+
+</style>

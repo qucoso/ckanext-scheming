@@ -146,7 +146,9 @@ class _SchemingMixin(object):
             self._schema_urls,
             self.SCHEMA_TYPE_FIELD
         )
+        # log.info(self._schemas)
 
+ 
         self._expanded_schemas = _expand_schemas(self._schemas)
 
     def is_fallback(self):
@@ -253,7 +255,7 @@ class SchemingDatasetsPlugin(p.SingletonPlugin, DefaultDatasetForm,
         return facets_ordered
     
     def dataset_facets(self, facets_dict, package_type):
-        facets_dict['level'] = p.toolkit._('SIKKOs_Tags')        
+        # facets_dict['level'] = p.toolkit._('SIKKOs_Tags')        
         # Return the updated facet dict.
         return self.get_filter_config()
             
@@ -491,6 +493,7 @@ class SchemingNerfIndexPlugin(p.SingletonPlugin):
                 continue
             if 'repeating_subfields' in d:
                 data_dict[d['field_name']] = json.dumps(data_dict[d['field_name']])
+            #hier kann ich noch ein paar Felder hinzufügen
 
         return data_dict
 
@@ -645,7 +648,6 @@ def _expand(schema, field):
         if preset not in _SchemingMixin._presets:
             raise SchemingException('preset \'{}\' not defined'.format(preset))
         field = dict(_SchemingMixin._presets[preset], **field)
-
     return field
 
 
@@ -656,15 +658,29 @@ def _expand_schemas(schemas):
     out = {}
     for name, original in schemas.items():
         schema = dict(original)
+
+
+        # to add the extrafields for the structure of the tags
+        for field in schema['dataset_fields']:
+            if 'choise_koko' in field:
+                for i in range(0, (count(field["choise_koko"])+1)):
+                    lvel = {
+                        "field_name": "",
+                        "label": "level",
+                        "preset": "koko_empty_preset"
+                    }
+                    lvel["field_name"] = "level" + str(i)
+                    schema["dataset_fields"].append(lvel)
+
         for grouping in ('fields', 'dataset_fields', 'resource_fields'):
             if grouping not in schema:
                 continue
-
+                
             schema[grouping] = [
                 _expand(schema, field)
                 for field in schema[grouping]
             ]
-
+            
             for field in schema[grouping]:
                 if 'repeating_subfields' in field:
                     field['repeating_subfields'] = [
@@ -678,6 +694,11 @@ def _expand_schemas(schemas):
                     ]
 
         out[name] = schema
+        log.info(out)
     return out
+
+def count(d):
+    # counts the levels of a dict
+    return max(count(v) if isinstance(v,dict) else 0 for v in d.values()) + 1
 
 

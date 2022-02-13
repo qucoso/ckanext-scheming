@@ -148,7 +148,13 @@
 				"form_snippet": "koko_final.html",
 				"display_snippet": "koko_display.html"
 			}
-			
+		},
+		{
+			"preset_name": "koko_empty_preset",
+			"values": {
+				"form_snippet": "koko_empty.html",
+				"display_snippet": "koko_empty.html"
+			}
 		},
 		{
 			"preset_name": "date_range_start",

@@ -64,7 +64,6 @@
             "label": "SIKKOs_Tags",
             "help_text": "Select at least one tag!",
             "preset": "koko_type_preset",
-            "required": "true",
             "choise_koko": {
                 "deutschland": {
                     "niedersachsen": [
