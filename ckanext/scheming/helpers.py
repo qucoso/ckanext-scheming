@@ -471,16 +471,14 @@ def datasets_available(ds_type):
     result = logic.get_action(u'package_search')(context, data_dict)
     return result['results']
 
-#@helper
-def create_Tags(tags):
-    user = tk.get_action('get_site_user')({'ignore_auth': True}, {})
-    context = {'user': user['name']}
-    try:
-        data = {'id': 'country_codes'}
-        tk.get_action('vocabulary_show')(context, data)
-    except tk.ObjectNotFound:
-        data = {'name': 'country_codes'}
-        vocab = tk.get_action('vocabulary_create')(context, data)
-        for tag in (u'svergie', u'deutschland'):
-            data = {'name': tag, 'vocabulary_id': vocab['id']}
-            tk.get_action('tag_create')(context, data)
+@helper
+def combineLevels(data):
+    # merges all levels
+    data_comb =[]
+    level_enum = 0
+    name = 'level'+str(level_enum)
+    while (name in data):
+        data_comb.append(data[name])
+        level_enum +=1
+        name = 'level'+str(level_enum)
+    return data_comb
