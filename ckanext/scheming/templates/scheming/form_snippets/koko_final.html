@@ -28,7 +28,18 @@ is_required=h.scheming_field_required(field)
 {% endwith %}
 
 <script>
-    var choices = {{ field["choise_koko"]| tojson | safe}};
+    var data = {{ h.combineLevels(data) | tojson }};
+    var choices = {{ field["choise_koko"]| tojson | safe }};
+
+    function addselectedValues(data){
+        for (let i = 0; i < data.length; i++){
+            elem = document.querySelector(`[data-level='${String(i)}']`);
+            elem.value = data[i];
+            updateSelection(elem);
+        }
+    }
+
+    addselectedValues(data);
 
     function updateSelection(item) {
         var selections = document.getElementById("selections");

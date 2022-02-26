@@ -9,7 +9,10 @@
             <nav aria-label="Koko" id="level_21">
                 <!-- <ul class="list-unstyled nav nav-simple nav-facet"> -->
                 <ul>
-                    <!-- Dasa muss ich noch mal ersetzen durch die richtigen Daten -->
+                    {{ "NaNo" }}
+                    {% with items = items or h.get_facet_items_dict(name, search_facets or c.search_facets) %}
+                    {{ "NaNo" }}
+                    <!-- Das muss ich noch mal ersetzen durch die richtigen Daten -->
                     {% set field = {"deutschland": {"niedersachsen": ["braunschweig"],"sachsen": ["dresden"]},"svergie":
                     {"Dalarna": ["Mora","Åre"],"Gävleborg": ["Gävle"],"Östergötland": ["Vadstena"]}} %}
                     {%- for key, value in field.items() recursive %}

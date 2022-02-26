@@ -1,0 +1,11 @@
+{% ckan_extends %}
+
+{% block facet_list %}
+
+{#% snippet "package/snippets/testen_baum.html" %#}       
+
+{#{ super() }#}
+
+{{ items }}
+
+{% endblock %}

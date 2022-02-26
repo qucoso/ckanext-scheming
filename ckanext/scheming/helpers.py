@@ -477,8 +477,15 @@ def combineLevels(data):
     data_comb =[]
     level_enum = 0
     name = 'level'+str(level_enum)
-    while (name in data):
-        data_comb.append(data[name])
-        level_enum +=1
-        name = 'level'+str(level_enum)
-    return data_comb
+    try:
+        if data[name]: 
+            while (name in data):
+                data_comb.append(data[name])
+                level_enum +=1
+                name = 'level'+str(level_enum)
+            return data_comb
+        else:
+            return []
+    except KeyError:
+        return []
+        # none

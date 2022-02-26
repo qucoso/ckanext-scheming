@@ -694,7 +694,7 @@ def _expand_schemas(schemas):
                     ]
 
         out[name] = schema
-        log.info(out)
+        # log.info(out)
     return out
 
 def count(d):
