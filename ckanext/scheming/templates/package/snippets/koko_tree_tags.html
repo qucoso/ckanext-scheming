@@ -9,21 +9,24 @@
                 <!-- <ul class="list-unstyled nav nav-simple nav-facet"> -->
                 <ul>
                     <!-- Das muss ich noch mal ersetzen durch die richtigen Daten -->
-                    {% set field = {"deutschland": {"niedersachsen": ["braunschweig"],"sachsen": ["dresden"]},"svergie": {"Dalarna": ["Mora","Åre"],"Gävleborg": ["Gävle"],"Östergötland": ["Vadstena"]}} %}
+                    {% set data = h.treeData_data() %}
+                    {% set field = data[0] %}
+                    {% set counter = data[1] %}
+                    {% set level = data[2] %}
                     {%- for key, value in field.items() recursive %}
                     <details>
                         <summary>
                             <li>
-                                {{ items }}
                                 <!-- class="nav-item" -->
-                                <a class="nav-item" href="?level0={{ key }}" title="">
+                                <a class="nav-item" href="?level{{ level[key] }}={{ key }}" title="">
                                     <span class="item-label">{{ key }}</span>
                                     <span class="hidden separator"> - </span>
-                                    <span class="item-count badge">7</span>
+                                    <!-- <span class="item-count badge">{{ counter[key] }}</span>-->
+                                    <span class="item-count badge">{{ h.count(value) }}</span>
                                 </a>
                             </li>
                         </summary>
-                        {%- if value is mapping %}
+                        {%- if value %}
                         <!-- class="list-unstyled nav nav-simple nav-facet" -->
                         <ul>{{ loop(value.items()) }}</ul>
                         {% else %}

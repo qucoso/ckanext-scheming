@@ -4,6 +4,7 @@ import re
 import datetime
 import pytz
 import json
+import collections
 import six
 import logging
 
@@ -488,4 +489,58 @@ def combineLevels(data):
             return []
     except KeyError:
         return []
-        # none
+
+# a few functions for the treeData function
+def dict_merge(dct, merge_dct):
+    for k, v in merge_dct.iteritems():
+        if (k in dct and isinstance(dct[k], dict) and isinstance(merge_dct[k], collections.Mapping)):
+            dict_merge(dct[k], merge_dct[k])
+        else:
+            dct[k] = merge_dct[k]
+
+def getJSON_result(data):
+    level = 0
+    result = {}
+    allData = []
+    while "level"+str(level) in data:
+        val = data["level"+str(level)]
+        if val != "":
+            allData.append(data["level"+str(level)])
+        level += 1
+
+    allData.reverse()
+
+    for item in allData:
+        result = {item: result}
+
+    return result
+
+@helper
+def treeData_data():
+    ckan_loc = LocalCKAN()
+    # ['level1','level0', 'name']
+    data = ckan_loc.action.package_search(include_private=True)
+    result = {}
+    counter = {}
+    level = {}
+    for datasets in data["results"]:
+        
+        level_enum = 0
+        while "level"+str(level_enum) in datasets:
+            data_level = datasets["level"+str(level_enum)]
+            if data_level and data_level not in counter:
+                counter.update({data_level: 1})
+                level.update({data_level: level_enum})
+            elif data_level:
+                counter[data_level] = counter[data_level] + 1
+            level_enum += 1
+
+        dict_merge(result, getJSON_result(datasets))
+    return [result, counter, level]
+
+@helper   
+def count(data):
+    i = 0
+    for item in data.values():
+        i += count(item)
+    return max(i, 1)

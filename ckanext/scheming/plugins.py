@@ -4,6 +4,7 @@ import os
 import inspect
 import logging
 from functools import wraps
+from re import L
 
 import six
 import yaml
@@ -204,15 +205,16 @@ class SchemingDatasetsPlugin(p.SingletonPlugin, DefaultDatasetForm,
     p.implements(p.IDatasetForm, inherit=True)
     p.implements(p.IActions)
     p.implements(p.IValidators)
-    p.implements(p.IFacets, inherit=True)
+    # this is required 
+    p.implements(p.IFacets, inherit=False)
 
     SCHEMA_OPTION = 'scheming.dataset_schemas'
     FALLBACK_OPTION = 'scheming.dataset_fallback'
     SCHEMA_TYPE_FIELD = 'dataset_type'
     # this the name of the Field
-    SCHEMA_FILTER_ORDER = ['organization', 'groups', 'tags', 'res_format', 'license_id', 'level']
+    SCHEMA_FILTER_ORDER = ['organization', 'groups', 'tags', 'res_format', 'license_id']
     # this is the label of the field
-    SCHEMA_FILTER_TITLES = [p.toolkit._('Organizations'), p.toolkit._('Groups'), p.toolkit._('Tags'), p.toolkit._('Formats'), p.toolkit._('License')], p.toolkit._('SIKKOs_Tags')
+    SCHEMA_FILTER_TITLES = [p.toolkit._('Organizations'), p.toolkit._('Groups'), p.toolkit._('Tags'), p.toolkit._('Formats'), p.toolkit._('License')]
     
 
     @classmethod
@@ -255,9 +257,17 @@ class SchemingDatasetsPlugin(p.SingletonPlugin, DefaultDatasetForm,
         return facets_ordered
     
     def dataset_facets(self, facets_dict, package_type):
-        # facets_dict['level'] = p.toolkit._('SIKKOs_Tags')        
+        #name_lvl = level
+        # if p.toolkit._('level3'):
+        # log.warning("KOKO iist HIIIER!!!!")
+        # log.warning(p.toolkit._('level3'))
+        facets_dict['level0'] = p.toolkit._('level0')
+        facets_dict['level1'] = p.toolkit._('level1')
+        facets_dict['level2'] = p.toolkit._('level2')
+        
+        return facets_dict
         # Return the updated facet dict.
-        return self.get_filter_config()
+        # return self.get_filter_config()
             
     def organization_facets(self, facets_dict, organization_type, package_type):
         #facets_dict['type'] = p.toolkit._('Type')
@@ -694,7 +704,6 @@ def _expand_schemas(schemas):
                     ]
 
         out[name] = schema
-        # log.info(out)
     return out
 
 def count(d):
