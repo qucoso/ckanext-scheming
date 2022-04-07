@@ -259,11 +259,10 @@ class SchemingDatasetsPlugin(p.SingletonPlugin, DefaultDatasetForm,
     def dataset_facets(self, facets_dict, package_type):
         #name_lvl = level
         # if p.toolkit._('level3'):
-        # log.warning("KOKO iist HIIIER!!!!")
         # log.warning(p.toolkit._('level3'))
-        facets_dict['level0'] = p.toolkit._('level0')
-        facets_dict['level1'] = p.toolkit._('level1')
-        facets_dict['level2'] = p.toolkit._('level2')
+        # facets_dict['level0'] = p.toolkit._('level0')
+        # facets_dict['level1'] = p.toolkit._('level1')
+        # facets_dict['level2'] = p.toolkit._('level2')
         
         return facets_dict
         # Return the updated facet dict.
@@ -672,12 +671,12 @@ def _expand_schemas(schemas):
 
         # to add the extrafields for the structure of the tags
         for field in schema['dataset_fields']:
-            if 'choise_koko' in field:
-                for i in range(0, (count(field["choise_koko"])+1)):
+            if 'choise_nt' in field:
+                for i in range(0, (count(field["choise_nt"])+1)):
                     lvel = {
                         "field_name": "",
                         "label": "level",
-                        "preset": "koko_empty_preset"
+                        "preset": "nt_empty_preset"
                     }
                     lvel["field_name"] = "level" + str(i)
                     schema["dataset_fields"].append(lvel)

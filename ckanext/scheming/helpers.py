@@ -519,7 +519,7 @@ def getJSON_result(data):
 def treeData_data():
     ckan_loc = LocalCKAN()
     # ['level1','level0', 'name']
-    data = ckan_loc.action.package_search(include_private=True)
+    data = ckan_loc.action.package_search(include_private=False)
     result = {}
     counter = {}
     level = {}

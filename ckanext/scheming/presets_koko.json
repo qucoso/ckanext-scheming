@@ -143,17 +143,17 @@
 			}
 		},
 		{
-			"preset_name": "koko_type_preset",
+			"preset_name": "nt_type_preset",
 			"values": {
-				"form_snippet": "koko_final.html",
-				"display_snippet": "koko_display.html"
+				"form_snippet": "nt_request.html",
+				"display_snippet": "nt_representation.html"
 			}
 		},
 		{
-			"preset_name": "koko_empty_preset",
+			"preset_name": "nt_empty_preset",
 			"values": {
-				"form_snippet": "koko_empty.html",
-				"display_snippet": "koko_empty.html"
+				"form_snippet": "nt_empty.html",
+				"display_snippet": "nt_empty.html"
 			}
 		},
 		{

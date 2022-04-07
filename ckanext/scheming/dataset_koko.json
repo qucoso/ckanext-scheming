@@ -61,19 +61,19 @@
         },
         {
             "field_name": "level",
-            "label": "SIKKOs_Tags",
+            "label": "Nested Tags",
             "help_text": "Select at least one tag!",
-            "preset": "koko_type_preset",
-            "choise_koko": {
-                "deutschland": {
-                    "niedersachsen": [
-                        "braunschweig"
+            "preset": "nt_type_preset",
+            "choise_nt": {
+                "Deutschland": {
+                    "Niedersachsen": [
+                        "Braunschweig"
                     ],
-                    "sachsen": [
-                        "dresden"
+                    "Sachsen": [
+                        "Dresden"
                     ]
                 },
-                "svergie": {
+                "Sverige": {
                     "Dalarna": [
                         "Mora",
                         "Åre"
@@ -82,7 +82,8 @@
                         "Gävle"
                     ],
                     "Östergötland": [
-                        "Vadstena"
+                        "Vadstena",
+                        "Linköping"
                     ]
                 }
             }
