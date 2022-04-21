@@ -257,12 +257,10 @@ class SchemingDatasetsPlugin(p.SingletonPlugin, DefaultDatasetForm,
         return facets_ordered
     
     def dataset_facets(self, facets_dict, package_type):
-        #name_lvl = level
-        # if p.toolkit._('level3'):
-        # log.warning(p.toolkit._('level3'))
-        # facets_dict['level0'] = p.toolkit._('level0')
-        # facets_dict['level1'] = p.toolkit._('level1')
-        # facets_dict['level2'] = p.toolkit._('level2')
+        # the test factes
+        facets_dict['level0'] = p.toolkit._('level0')
+        facets_dict['level1'] = p.toolkit._('level1')
+        facets_dict['level2'] = p.toolkit._('level2')
         
         return facets_dict
         # Return the updated facet dict.

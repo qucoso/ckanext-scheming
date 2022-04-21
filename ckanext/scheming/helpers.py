@@ -7,6 +7,7 @@ import json
 import collections
 import six
 import logging
+import lxml.etree as ET
 
 import ckan.logic as logic
 # I have added this library to create the facets for the dataset search
@@ -490,6 +491,51 @@ def combineLevels(data):
     except KeyError:
         return []
 
+# a few functions for the treeData_XML function
+
+def getXML_result(data):
+    level = 0
+    result = []
+    while "level"+str(level) in data:
+        val = data.get("level"+str(level))
+        if val != "":
+            result.append(val)
+        level += 1
+    return result
+
+def counter (column, value, table):
+    count = 0
+    for row in table:
+        if column <= len(row)-1 :
+            if row[column] == value:
+                count += 1
+    return str(count)
+
+@helper
+def treeData_data_xml():
+    ckan_loc = LocalCKAN()
+    data = ckan_loc.action.package_search(include_private=False)
+
+    result = []
+    for id in data["results"]:
+        if getXML_result(id):
+            result.append(getXML_result(id))
+
+    declaration = '<?xml version="1.0" encoding="utf-8"?>'
+
+    dico = {}
+    root = ET.Element("laender")
+    ET.ElementTree(root)
+    for row_num, row in enumerate(result):
+        for column_num, elem in enumerate(row):
+            if elem not in dico and column_num == 0 and elem:
+                dico.update({elem: ET.SubElement(root, "level" + str(column_num), count=counter(column_num, elem, result), name=elem)})
+            elif elem not in dico and elem:
+                dico.update({elem: ET.SubElement(dico[result[row_num][column_num-1]], "level" + str(column_num), count=counter(column_num, elem, result), name=elem)})
+
+    xml_str = ET.tostring(root, encoding="utf-8", method='xml')
+    return declaration + xml_str
+
 # a few functions for the treeData function
 def dict_merge(dct, merge_dct):
     for k, v in merge_dct.iteritems():
@@ -524,7 +570,6 @@ def treeData_data():
     counter = {}
     level = {}
     for datasets in data["results"]:
-        
         level_enum = 0
         while "level"+str(level_enum) in datasets:
             data_level = datasets["level"+str(level_enum)]

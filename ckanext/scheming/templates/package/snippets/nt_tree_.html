@@ -1,0 +1,65 @@
+<div class="filters">
+    <div>
+        <section class="module module-narrow module-shallow">
+            <h2 class="module-heading">
+                <i class="fa fa-filter"></i>
+                Nested Tags
+            </h2>
+            <nav aria-label="nested_Tags" id="level">
+                <!-- <ul class="list-unstyled nav nav-simple nav-facet"> -->
+                <ul>
+                    {% set data = h.treeData_data() %}
+                    {% set field = data[0] %}
+                    {% set counter = data[1] %}
+                    {% set level = data[2] %}
+                    {%- for key, value in field.items() recursive %}
+                    {%- if value != {} %}
+                    <details>
+                        <summary>
+                            <li>
+                                <!-- class="nav-item" -->
+                                <a class="nav-item" href="?level{{ level[key] }}={{ key }}" title="">
+                                    <span class="item-label">{{ key }}</span>
+                                    <span class="hidden separator"> - </span>
+                                    <!-- <span class="item-count badge">{{ counter[key] }}</span>-->
+                                    <span class="item-count badge">{{ h.count(value) }}</span>
+                                </a>
+                            </li>
+                        </summary>
+                        <!-- class="list-unstyled nav nav-simple nav-facet" -->
+                        <ul>{{ loop(value.items()) }}</ul>
+                        {% else %}
+                            <li>
+                                <!-- class="nav-item" -->
+                                <a class="nav-item" href="?level{{ level[key] }}={{ key }}" title="">
+                                    <span class="item-label">{{ key }}</span>
+                                    <span class="hidden separator"> - </span>
+                                    <!-- <span class="item-count badge">{{ counter[key] }}</span>-->
+                                    <span class="item-count badge">{{ h.count(value) }}</span>
+                                </a>
+                            </li>
+                        {%- endif %}
+                    </details>
+                    {%- endfor %}
+                </ul>
+            </nav>
+        </section>
+    </div>
+</div>
+<style>
+    summary {
+        position: relative;
+        list-style: circle;
+    }
+    details {
+        color:#A5B65A;
+    }
+    details[open]{
+        color:#489CD4;
+    }
+    /* .nav-item{
+        display: block;
+        padding: 10px 0px;
+    } */
+
+</style>
