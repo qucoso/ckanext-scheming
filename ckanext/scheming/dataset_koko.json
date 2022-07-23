@@ -60,6 +60,12 @@
             "form_placeholder": "eg. economy, mental health, government"
         },
         {
+            "field_name": "gemet_keywords",
+            "label": "Gemet Keywords",
+            "help_text": "Select at least one Gemet Keyword!",
+            "preset": "gemet_preset"
+        },
+        {
             "field_name": "level",
             "label": "Nested Tags",
             "help_text": "Select at least one tag!",

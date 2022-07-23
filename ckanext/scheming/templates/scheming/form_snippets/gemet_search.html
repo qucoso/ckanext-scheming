@@ -1,0 +1,179 @@
+{% import 'macros/form.html' as form %}
+
+{% with
+name=field.field_name,
+id='field-' + field.field_name,
+label=h.scheming_language_text(field.label),
+placeholder=h.scheming_language_text(field.form_placeholder),
+value=data[field.field_name],
+error=errors[field.field_name],
+classes=field.classes if 'classes' in field else ['control-medium'],
+is_required=h.scheming_field_required(field)
+%}
+
+{% call form.input_block(id, label, error, classes, is_required=is_required) %}
+
+<div class="wrapper_">
+    <div class="search-input">
+        <a href="" target="_blank" hidden></a>
+        <input type="text" name="gemet_keywords" placeholder="Type to search a GEMET keyword...">
+        <div class="autocom-box"></div>
+    </div>
+</div>
+
+{%- snippet 'scheming/form_snippets/help_text.html', field=field -%}
+
+{% endcall %}
+{% endwith %}
+
+
+
+<style>
+    /* *{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body{
+    padding: 0 20px;
+}
+
+::selection{
+  color: #fff;
+} */
+
+    .wrapper_ {
+        width: 100%;
+        margin: auto;
+    }
+
+    .wrapper_ .search-input {
+        background: #fff;
+        width: 100%;
+        border-radius: 5px;
+        position: relative;
+        box-shadow: 0px 1px 5px 3px rgba(0, 0, 0, 0.12);
+    }
+
+    .search-input input {
+        height: 34px;
+        width: 100%;
+        border: 1px solid #aaa;
+        box-shadow: none !important;
+        padding-left: 10px;
+    }
+
+    .search-input.active input {
+        border-radius: 3px;
+    }
+
+    .search-input .autocom-box {
+        padding: 0;
+        opacity: 0;
+        pointer-events: none;
+        max-height: 280px;
+        overflow-y: auto;
+    }
+
+    .search-input.active .autocom-box {
+        padding: 10px 8px;
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .autocom-box li {
+        list-style: none;
+        padding-left: 10px;
+        display: none;
+        width: 100%;
+        cursor: default;
+        border-radius: 3px;
+    }
+
+    .search-input.active .autocom-box li {
+        display: block;
+    }
+
+    .autocom-box li:hover {
+        background: #efefef;
+    }
+
+    .search-input .icon {
+        position: absolute;
+        right: 0px;
+        top: 0px;
+        height: 34px;
+        width: 100%;
+        text-align: center;
+        line-height: 29px;
+        color: #c9c9c9;
+        cursor: pointer;
+    }
+</style>
+
+<script>
+    // getting all required elements
+    const searchWrapper = document.querySelector(".search-input");
+    const inputBox = searchWrapper.querySelector("input");
+    const suggBox = searchWrapper.querySelector(".autocom-box");
+    let linkTag = searchWrapper.querySelector("a");
+    let webLink;
+
+
+    var delayTimer;
+    function doSearch(input) {
+        clearTimeout(delayTimer);
+        delayTimer = setTimeout(function () {
+            showResults(input)
+        }, 500);
+    }
+
+    // if user press any key and release
+    inputBox.onkeyup = (e) => {
+        let userData = e.target.value; //user enetered data
+        if (userData) {
+            let emptyArray = [];
+            var url_keyword = `https://www.eionet.europa.eu/gemet/getConceptsMatchingKeyword?keyword=${userData}&search_mode=4&thesaurus_uri=http://www.eionet.europa.eu/gemet/concept/&language=de`;
+            fetch(url_keyword)
+                .then(result => result.json())
+                .then((output) => {
+                    output.forEach(element => {
+                        emptyArray.push('<li>' + element.preferredLabel.string + '</li>');
+                    });
+                    if (emptyArray.length > 25) {
+                        emptyArray.splice(25);
+                    };
+                    searchWrapper.classList.add("active"); //show autocomplete box
+                    showSuggestions(emptyArray);
+                    let list = suggBox.querySelectorAll("li");
+                    for (let i = 0; i < list.length; i++) {
+                        //adding onclick attribute in all li tag
+                        list[i].setAttribute("onclick", "select(this)");
+                    }
+                }).catch(err => console.error(err));
+
+
+
+        } else {
+            searchWrapper.classList.remove("active"); //hide autocomplete box
+        }
+    }
+
+    function select(element) {
+        let selectData = element.textContent;
+        inputBox.value = selectData;
+        searchWrapper.classList.remove("active");
+    }
+
+    function showSuggestions(list) {
+        let listData;
+        if (!list.length) {
+            userValue = inputBox.value;
+            listData = `<li>${userValue}</li>`;
+        } else {
+            listData = list.join('');
+        }
+        suggBox.innerHTML = listData;
+    }
+</script>

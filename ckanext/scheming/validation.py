@@ -6,6 +6,7 @@ import itertools
 import pytz
 import six
 import string
+import requests
 
 import ckan.lib.helpers as h
 from ckan.lib.navl.dictization_functions import convert
@@ -689,3 +690,40 @@ def spatial_resolution_validator(value):
         decimal_validator(re)
     return value
 
+@register_validator
+def gemet_hierarchial_tree(value):
+    language = "de"
+
+    # get the related object
+    # take a look at the languages at the end!!!
+    def getRelatedObj(o_uri, type):
+        if type == "broader":
+            relation = "http://www.w3.org/2004/02/skos/core%23broader&language=" + language
+        elif type == "group":
+            relation = "http://www.eionet.europa.eu/gemet/2004/06/gemet-schema.rdf%23group&language=" + language
+        url = "https://www.eionet.europa.eu/gemet/getRelatedConcepts?concept_uri=" + o_uri + "&relation_uri=" + relation
+        return requests.get(url).json()
+
+    def getValue(req, type):
+        if req and type == "string":
+            return req[0].get('preferredLabel').get('string')
+        elif req and type == "uri":
+            return req[0].get('uri')
+        elif not req:
+            return None
+
+    def createTree(object):
+        list = [getValue(object,"string")]
+        uri = getValue(object,"uri")
+        while getRelatedObj(uri,"broader"):
+            object = getRelatedObj(uri,"broader")
+            list.append(getValue(object,"string"))
+            uri = getValue(object,"uri")
+        
+        list.append(getValue(getRelatedObj(uri,"group"),"string"))
+        list.reverse()
+        return list
+    
+    url = "https://www.eionet.europa.eu/gemet/getConceptsMatchingKeyword?keyword=" + value + "&search_mode=0&thesaurus_uri=http://www.eionet.europa.eu/gemet/concept/&language=" + language
+    req = requests.get(url).json()
+    return createTree(req)
