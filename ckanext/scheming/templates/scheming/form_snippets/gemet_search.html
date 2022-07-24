@@ -23,26 +23,7 @@ is_required=h.scheming_field_required(field)
 
 {%- snippet 'scheming/form_snippets/help_text.html', field=field -%}
 
-{% endcall %}
-{% endwith %}
-
-
-
 <style>
-    /* *{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body{
-    padding: 0 20px;
-}
-
-::selection{
-  color: #fff;
-} */
-
     .wrapper_ {
         width: 100%;
         margin: auto;
@@ -119,7 +100,14 @@ body{
     const suggBox = searchWrapper.querySelector(".autocom-box");
     let linkTag = searchWrapper.querySelector("a");
     let webLink;
-
+    
+    // adds the preselected value
+    // var choices = {#{ field["gemet_keyword"]| tojson | safe }#};
+    // var choices = {#{ field["gemet_keywords"] }#};
+    // console.warn(choices);
+    // if (choices){
+    //     inputBox.value = choices;
+    // }
 
     var delayTimer;
     function doSearch(input) {
@@ -177,3 +165,6 @@ body{
         suggBox.innerHTML = listData;
     }
 </script>
+
+{% endcall %}
+{% endwith %}
