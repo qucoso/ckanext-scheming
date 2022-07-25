@@ -2,6 +2,7 @@ import json
 import datetime
 from collections import defaultdict
 import itertools
+import logging
 
 import pytz
 import six
@@ -733,9 +734,18 @@ def gemet_hierarchial_tree(field, schema):
             list.append(getValue(getRelatedObj(uri,"group"),"string"))
             list.reverse()
             return list
-
-        url = "https://www.eionet.europa.eu/gemet/getConceptsMatchingKeyword?keyword=" + value + "&search_mode=0&thesaurus_uri=http://www.eionet.europa.eu/gemet/concept/&language=" + language
-        req = requests.get(url).json()
-        data[key] = json.dumps(createTree(req))
-
+        
+        logging.warning(type(value))
+        logging.warning(value)
+        if (type(value) is unicode) and not value.startswith("{"):
+            url = "https://www.eionet.europa.eu/gemet/getConceptsMatchingKeyword?keyword=" + value + "&search_mode=0&thesaurus_uri=http://www.eionet.europa.eu/gemet/concept/&language=" + language
+            req = requests.get(url).json()
+            logging.warning(json.dumps(createTree(req)))
+            data[key] = json.dumps(createTree(req))
+        elif (type(value) is list):
+            data[key] = json.dumps(value)
+            
+        # elif (type(value) is unicode) and  value.startswith("{"):
+        #     # in case of the creation of dataset
+        #     None
     return _scheming_multiple_text
