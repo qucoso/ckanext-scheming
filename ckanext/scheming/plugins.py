@@ -258,6 +258,7 @@ class SchemingDatasetsPlugin(p.SingletonPlugin, DefaultDatasetForm,
     
     def dataset_facets(self, facets_dict, package_type):
         # the test factes
+        facets_dict['nested_tags'] = p.toolkit._('nested_tags')
         facets_dict['level0'] = p.toolkit._('level0')
         facets_dict['level1'] = p.toolkit._('level1')
         facets_dict['level2'] = p.toolkit._('level2')
@@ -491,6 +492,8 @@ class SchemingNerfIndexPlugin(p.SingletonPlugin):
     p.implements(p.IPackageController, inherit=True)
 
     def before_index(self, data_dict):
+        logging.warning(data_dict)
+        logging.warning('HAAALLLLO')
         schemas = SchemingDatasetsPlugin.instance._expanded_schemas
         if data_dict['type'] not in schemas:
             return data_dict
@@ -498,7 +501,7 @@ class SchemingNerfIndexPlugin(p.SingletonPlugin):
         for d in schemas[data_dict['type']]['dataset_fields']:
             if d['field_name'] not in data_dict:
                 continue
-            if 'repeating_subfields' in d:
+            if 'repeating_subfields' in d or 'gemet_keywords' in d:
                 data_dict[d['field_name']] = json.dumps(data_dict[d['field_name']])
             #hier kann ich noch ein paar Felder hinzufügen
 

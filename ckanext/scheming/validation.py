@@ -735,12 +735,13 @@ def gemet_hierarchial_tree(field, schema):
             list.reverse()
             return list
         
-        logging.warning(type(value))
-        logging.warning(value)
+        # just to unsterstand the error
+        # logging.warning(type(value))
+        # logging.warning(value)
         if (type(value) is unicode) and not value.startswith("{"):
             url = "https://www.eionet.europa.eu/gemet/getConceptsMatchingKeyword?keyword=" + value + "&search_mode=0&thesaurus_uri=http://www.eionet.europa.eu/gemet/concept/&language=" + language
             req = requests.get(url).json()
-            logging.warning(json.dumps(createTree(req)))
+            # logging.warning(json.dumps(createTree(req)))
             data[key] = json.dumps(createTree(req))
         elif (type(value) is list):
             data[key] = json.dumps(value)
