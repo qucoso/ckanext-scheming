@@ -146,6 +146,7 @@
 			"preset_name": "gemet_preset",
 			"values": {
 				"form_snippet": "gemet_search.html",
+				"display_snippet": "gemet_representation.html",
 				"validators": "gemet_hierarchial_tree",
 				"output_validators": "scheming_multiple_choice_output"
 			}
