@@ -1,7 +1,7 @@
 <ul class="tag-list">
     {% for data in data[field.field_name] %}
     <li>
-        <a class="tag" href="j">{{ data }}</a>
+        <a class="tag" href="/dataset/?gemet_keywords={{ data}} ">{{ data }}</a>
     </li>
     {% endfor %}
 </ul>
