@@ -16,7 +16,7 @@ is_required=h.scheming_field_required(field)
 <div class="wrapper_">
     <div class="search-input">
         <a href="" target="_blank" hidden></a>
-        <input type="text" name="gemet_keywords" placeholder="Type to search a GEMET keyword...">
+        <input type="text" name="gemet_keywords" placeholder="Type to search a GEMET keyword..." value="{{ value[-1] | empty_and_escape }}">
         <div class="autocom-box"></div>
     </div>
 </div>
