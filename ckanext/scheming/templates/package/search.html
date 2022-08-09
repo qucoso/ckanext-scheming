@@ -1,8 +1,19 @@
 {% ckan_extends %}
 {% block secondary_content %}
 
+<!-- this block is for the nested tags -->
 {% snippet 'package/snippets/nt_tree_js.html' %}
-      
+
+<!-- for the gemet_keyword -->
+{% snippet 'package/snippets/gemet_tree.html' %}
+
+<!-- With this i get the facets -->
+ {% for facet in facet_titles %}
+ {% if facet == "gemet_keywords"%}
+     {{ h.get_facet_items_dict(facet, search_facets or c.search_facets) }}
+{% endif %}
+{% endfor %}
+
 {{ super() }}
 
 {% endblock %}
