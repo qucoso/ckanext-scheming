@@ -541,9 +541,9 @@ def treeData_data_xml(facet):
     ET.ElementTree(root)
     for row_num, row in enumerate(result):
         for column_num, elem in enumerate(row):
-            if elem not in dico and column_num == 0 and elem:
+            if elem not in dico and column_num == 0 and elem and facet_(facet, elem) != "0":
                 dico.update({elem: ET.SubElement(root, "level" + str(column_num), count=facet_(facet, elem), name=elem)})
-            elif elem not in dico and elem:
+            elif elem not in dico and elem and facet_(facet, elem) != "0":
                 dico.update({elem: ET.SubElement(dico[result[row_num][column_num-1]], "level" + str(column_num), count=facet_(facet, elem), name=elem)})
 
     xml_str = ET.tostring(root, encoding="utf-8", method='xml')
