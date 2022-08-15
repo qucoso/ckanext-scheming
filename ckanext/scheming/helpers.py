@@ -511,10 +511,23 @@ def counter (column, value, table):
                 count += 1
     return str(count)
 
+def facet_(facet, name):
+    # counter via facet
+    list = []
+    for elem in facet:
+        if elem['name'] == name:
+            return str(elem['count'])
+    
+    return str(0)
+
 @helper
-def treeData_data_xml():
+def treeData_data_xml2(facet):
+    return facet_(facet, 'Sverige')
+
+@helper
+def treeData_data_xml(facet):
     ckan_loc = LocalCKAN()
-    data = ckan_loc.action.package_search(include_private=False)
+    data = ckan_loc.action.package_search(include_private=True)
 
     result = []
     for id in data["results"]:
@@ -529,9 +542,9 @@ def treeData_data_xml():
     for row_num, row in enumerate(result):
         for column_num, elem in enumerate(row):
             if elem not in dico and column_num == 0 and elem:
-                dico.update({elem: ET.SubElement(root, "level" + str(column_num), count=counter(column_num, elem, result), name=elem)})
+                dico.update({elem: ET.SubElement(root, "level" + str(column_num), count=facet_(facet, elem), name=elem)})
             elif elem not in dico and elem:
-                dico.update({elem: ET.SubElement(dico[result[row_num][column_num-1]], "level" + str(column_num), count=counter(column_num, elem, result), name=elem)})
+                dico.update({elem: ET.SubElement(dico[result[row_num][column_num-1]], "level" + str(column_num), count=facet_(facet, elem), name=elem)})
 
     xml_str = ET.tostring(root, encoding="utf-8", method='xml')
     return declaration + xml_str
@@ -565,7 +578,7 @@ def getJSON_result(data):
 def treeData_data():
     ckan_loc = LocalCKAN()
     # ['level1','level0', 'name']
-    data = ckan_loc.action.package_search(include_private=False)
+    data = ckan_loc.action.package_search(include_private=True)
     result = {}
     counter = {}
     level = {}

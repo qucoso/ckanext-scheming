@@ -742,8 +742,14 @@ def gemet_hierarchial_tree(field, schema):
             url = "https://www.eionet.europa.eu/gemet/getConceptsMatchingKeyword?keyword=" + value + "&search_mode=0&thesaurus_uri=http://www.eionet.europa.eu/gemet/concept/&language=" + language
             req = requests.get(url).json()
             # logging.warning(json.dumps(createTree(req)))
+            # for num, elem in enumerate(createTree(req)):
+            #     name = "level" + str(num)
+            #     data[name] = elem
             data[key] = json.dumps(createTree(req))
         elif (type(value) is list):
+            # for num, elem in enumerate(value):
+            #     name = "level" + str(num)
+            #     data[name] = elem
             data[key] = json.dumps(value)
             
         # elif (type(value) is unicode) and  value.startswith("{"):

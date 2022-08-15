@@ -13,3 +13,118 @@
         </section>
     </div>
 </div>
+
+{{ h.treeData_data_xml2(h.get_facet_items_dict("nested_tags", search_facets or c.search_facets)) }}
+<script>
+    
+    function nodeMarkup(node) {
+        var result = Array();
+        for (var index = 0; index < node.childNodes.length; index++) {
+            let item = node.childNodes[index];
+            let children = nodeMarkup(item);
+            var data = "";
+            var caret = "";
+            
+            if (children.length > 0) {
+                data = `<ul class="nested">
+                    ${children.join("\n")}
+                    </ul>`;
+                }
+                if (data) {
+                    caret = "caret"
+                } else {
+                    caret = "caret-down"
+                }
+                
+                h = `<li>
+                    <div class="${caret}">${item.getAttribute('name')}
+                        <a href="?${item.tagName}=${item.getAttribute('name')}">
+                            <span class="badge">${item.getAttribute('count')}</span>
+                            </a>
+                            </div>
+                            ${data}
+                            </li>`
+                            
+                            result.push(h);
+                        }
+                        return result
+                    }
+                    
+                    let xmlData = {{ h.treeData_data_xml(h.get_facet_items_dict("nested_tags", search_facets or c.search_facets)) | tojson }}
+                    let parser = new DOMParser();
+                    let xmlDoc = parser.parseFromString(xmlData, "text/xml");
+                    
+                    html = nodeMarkup(xmlDoc.documentElement).join("\n");
+                    document.getElementById('myUL').innerHTML = html;
+                    
+                    var toggler = document.getElementsByClassName("caret");
+    var i;
+    for (i = 0; i < toggler.length; i++) {
+        toggler[i].addEventListener("click", function () {
+            this.parentElement.querySelector(".nested").classList.toggle("active");
+            this.classList.toggle("caret-down");
+        });
+    } 
+</script>
+<style>
+    ul,
+    #myUL {
+        list-style-type: none;
+    }
+
+    #myUL {
+        margin: 30;
+        padding: 0;
+    }
+
+    .box_ {
+        border: 3px solid #1B8AD0;
+        width: auto;
+        height: auto;
+        padding-left: 15px;
+        padding-top: 5px;
+    }
+
+    .caret {
+        user-select: true;
+        width: auto;
+        height: auto;
+        border: none;
+        margin-left: 0px;
+    }
+
+    /* .badge {
+        cursor: pointer;
+        margin-left: 10px;
+        display: inline-block;
+        padding: 5px 5px;
+        font-size: auto;
+        line-height: 1;
+        color: #144690;
+        text-align: center
+    } */
+
+    .caret::before {
+        content: "\25CF";
+        color: #50A723;
+        display: inline-block;
+
+    }
+
+    .caret-down::before {
+        content: "\25CB";
+        color: #50A723;
+        display: inline-block;
+    }
+
+    .nested {
+        cursor: pointer;
+        display: none;
+    }
+
+    .active {
+        display: block;
+        width: auto;
+        height: auto;
+    }
+</style>

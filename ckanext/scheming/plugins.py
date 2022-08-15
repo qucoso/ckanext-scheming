@@ -483,6 +483,22 @@ class SchemingOrganizationsPlugin(p.SingletonPlugin, _GroupOrganizationMixin,
                 logic.scheming_organization_schema_show,
         }
 
+class SubmissionsIndexPlugin(p.SingletonPlugin):
+    """
+    Map submission dataset fields to Solr fields
+    Das habe ich jetzt mal hinzugefügt, damit ich dann auch die Daten korrekkt suchen kann.
+    """
+    p.implements(p.IPackageController, inherit=True)
+
+    def before_index(self, data_dict):
+        flags = set()
+        logging.error("HALLO KOKO")
+        for sub in data_dict.get('gemet_keywords', []):
+            flags |= set(sub)
+
+        data_dict['submission'] = sorted(flags)
+
+        return data_dict
 
 class SchemingNerfIndexPlugin(p.SingletonPlugin):
     """
