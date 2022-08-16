@@ -34,9 +34,11 @@
                 caret = "caret-down"
             }
 
+            // don't need anymore
+            // <a href="?${item.tagName}=${item.getAttribute('name')}">
             h = `<li>
                     <div class="${caret}">${item.getAttribute('name')}
-                        <a href="?${item.tagName}=${item.getAttribute('name')}">
+                        <a href="?nested_tags=${item.getAttribute('name')}">
                             <span class="badge">${item.getAttribute('count')}</span>
                             </a>
                             </div>
@@ -49,7 +51,6 @@
     }
 
     let xmlData = {{ h.treeData_data_xml(h.get_facet_items_dict("nested_tags", search_facets or c.search_facets)) | tojson }}
-    // let xmlData = {#{ h.treeData_data_xml() | tojson }#}
     let parser = new DOMParser();
     let xmlDoc = parser.parseFromString(xmlData, "text/xml");
 
