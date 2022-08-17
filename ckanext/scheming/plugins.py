@@ -260,9 +260,9 @@ class SchemingDatasetsPlugin(p.SingletonPlugin, DefaultDatasetForm,
         # the test factes
         facets_dict['nested_tags'] = p.toolkit._('nested_tags')
         facets_dict['gemet_keywords'] = p.toolkit._('gemet_keywords')
-        facets_dict['level0'] = p.toolkit._('level0')
-        facets_dict['level1'] = p.toolkit._('level1')
-        facets_dict['level2'] = p.toolkit._('level2')
+        # facets_dict['level0'] = p.toolkit._('level0')
+        # facets_dict['level1'] = p.toolkit._('level1')
+        # facets_dict['level2'] = p.toolkit._('level2')
         
         return facets_dict
         # Return the updated facet dict.
@@ -496,7 +496,7 @@ class SubmissionsIndexPlugin(p.SingletonPlugin):
         for sub in data_dict.get('gemet_keywords', []):
             flags |= set(sub)
 
-        data_dict['submission'] = sorted(flags)
+        data_dict['submission'] = "sorted(flags)"
 
         return data_dict
 

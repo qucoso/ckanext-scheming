@@ -7,7 +7,18 @@
 <!-- for the gemet_keyword -->
 {% snippet 'package/snippets/gemet_tree.html' %}
 
+<!-- these facets are excluded -->
+{% set exclusion = ["nested_tags", "gemet_keywords"] %}
 
-{{ super() }}
+<div class="filters">
+    <div>
+        {% for facet in facet_titles %}
+        {% if facet not in exclusion %}
+        {{ h.snippet('snippets/facet_list.html', title=facet_titles[facet], name=facet, search_facets=search_facets) }}
+        {% endif %}
+        {% endfor %}
+    </div>
+    <a class="close no-text hide-filters"><i class="fa fa-times-circle"></i><span class="text">close</span></a>
+</div>
 
 {% endblock %}

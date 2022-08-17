@@ -50,7 +50,7 @@
         return result
     }
 
-    let xmlData = {{ h.treeData_data_xml(h.get_facet_items_dict("nested_tags", search_facets or c.search_facets)) | tojson }}
+    let xmlData = {{ h.treeData_data_xml(h.get_facet_items_dict("nested_tags", search_facets or c.search_facets)) | tojson }};
     let parser = new DOMParser();
     let xmlDoc = parser.parseFromString(xmlData, "text/xml");
 
