@@ -207,6 +207,7 @@ class SchemingDatasetsPlugin(p.SingletonPlugin, DefaultDatasetForm,
     p.implements(p.IValidators)
     # this is required 
     p.implements(p.IFacets, inherit=False)
+    p.implements(p.IPackageController, inherit=True)
 
     SCHEMA_OPTION = 'scheming.dataset_schemas'
     FALLBACK_OPTION = 'scheming.dataset_fallback'
@@ -384,6 +385,14 @@ class SchemingDatasetsPlugin(p.SingletonPlugin, DefaultDatasetForm,
         if not hasattr(c, 'licenses'):
             c.licenses = [('', '')] + model.Package.get_license_options()
 
+    # added by ko
+    def before_index(self, data_dict):
+        logging.error("HALLO KOKO")
+
+        data_dict['gemet_keywords'] = data_dict['gemet_keywords'][2:-2].split('", "')
+
+        return data_dict
+
 
 def expand_form_composite(data, fieldnames):
     """
@@ -483,23 +492,6 @@ class SchemingOrganizationsPlugin(p.SingletonPlugin, _GroupOrganizationMixin,
                 logic.scheming_organization_schema_show,
         }
 
-class SubmissionsIndexPlugin(p.SingletonPlugin):
-    """
-    Map submission dataset fields to Solr fields
-    Das habe ich jetzt mal hinzugefügt, damit ich dann auch die Daten korrekkt suchen kann.
-    """
-    p.implements(p.IPackageController, inherit=True)
-
-    def before_index(self, data_dict):
-        flags = set()
-        logging.error("HALLO KOKO")
-        for sub in data_dict.get('gemet_keywords', []):
-            flags |= set(sub)
-
-        data_dict['submission'] = "sorted(flags)"
-
-        return data_dict
-
 class SchemingNerfIndexPlugin(p.SingletonPlugin):
     """
     json.dump repeating dataset fields in before_index to prevent failures
@@ -509,7 +501,6 @@ class SchemingNerfIndexPlugin(p.SingletonPlugin):
     p.implements(p.IPackageController, inherit=True)
 
     def before_index(self, data_dict):
-        logging.error('HAAALLLLO')
         schemas = SchemingDatasetsPlugin.instance._expanded_schemas
         if data_dict['type'] not in schemas:
             return data_dict
