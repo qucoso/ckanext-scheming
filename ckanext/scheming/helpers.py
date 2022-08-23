@@ -539,7 +539,8 @@ def treeData_data_xml(facet):
     return declaration + xml_str
 
 @helper
-def treeData_data_xml_gemet(facet, name_facet):
+def treeData_data_xml_gemet(facets, name_facet):
+    facet = facets.get("gemet_keywords").get("items")
     ckan_loc = LocalCKAN()
     data = ckan_loc.action.package_search(include_private=True, fl=[name_facet])
     
@@ -551,6 +552,18 @@ def treeData_data_xml_gemet(facet, name_facet):
                 subresult.append(i)
             result.append(subresult)
     
+    # dico = {}
+    # root = ET.Element("root")
+    # ET.ElementTree(root)
+    # try:
+    #     for row_num, row in enumerate(result):
+    #         for column_num, elem in enumerate(row):
+    #             if elem not in dico and column_num == 0 and elem and facet_(facet, elem) != "0":
+    #                 dico.update({elem: ET.SubElement(root, "level" + str(column_num), count=facet_(facet, elem), name=elem)})
+    #             elif elem not in dico and elem and facet_(facet, elem) != "0":
+    #                 dico.update({elem: ET.SubElement(dico[result[row_num][column_num-1]], "level" + str(column_num), count=facet_(facet, elem), name=elem)})
+    # except KeyError:
+    #     xml_str = ET.tostring(root, encoding="unicode", method='xml')
     dico = {}
     root = ET.Element("root")
     ET.ElementTree(root)
@@ -560,6 +573,7 @@ def treeData_data_xml_gemet(facet, name_facet):
                 dico.update({elem: ET.SubElement(root, "level" + str(column_num), count=facet_(facet, elem), name=elem)})
             elif elem not in dico and elem and facet_(facet, elem) != "0":
                 dico.update({elem: ET.SubElement(dico[result[row_num][column_num-1]], "level" + str(column_num), count=facet_(facet, elem), name=elem)})
+
 
     xml_str = ET.tostring(root, encoding="unicode", method='xml')
     

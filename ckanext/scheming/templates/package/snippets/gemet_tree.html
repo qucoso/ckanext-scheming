@@ -50,7 +50,7 @@
         return result
     }
 
-    let xmlData = {{ h.treeData_data_xml_gemet(h.get_facet_items_dict("gemet_keywords", search_facets or c.search_facets), "gemet_keywords") | tojson }};
+    let xmlData = {{ h.treeData_data_xml_gemet(c.search_facets, "gemet_keywords") | tojson }}
     let parser = new DOMParser();
     let xmlDoc = parser.parseFromString(xmlData, "text/xml");
 
