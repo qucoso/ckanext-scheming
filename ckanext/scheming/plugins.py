@@ -8,6 +8,7 @@ from re import L
 
 import six
 import yaml
+import json as json_key
 import ckan.plugins as p
 from pylons import config
 
@@ -387,10 +388,9 @@ class SchemingDatasetsPlugin(p.SingletonPlugin, DefaultDatasetForm,
 
     # added by ko
     def before_index(self, data_dict):
-        logging.error("HALLO KOKO")
-
-        data_dict['gemet_keywords'] = data_dict['gemet_keywords'][2:-2].split('", "')
-
+        keys = json_key.loads(data_dict['gemet_keywords'])
+        logging.error(keys)
+        data_dict['gemet_keywords'] = keys
         return data_dict
 
 
@@ -510,7 +510,6 @@ class SchemingNerfIndexPlugin(p.SingletonPlugin):
                 continue
             if 'repeating_subfields' in d or 'gemet_keywords' in d:
                 data_dict[d['field_name']] = json.dumps(data_dict[d['field_name']])
-            #hier kann ich noch ein paar Felder hinzufügen
 
         return data_dict
 

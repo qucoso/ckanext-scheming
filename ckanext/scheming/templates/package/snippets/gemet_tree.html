@@ -3,9 +3,9 @@
         <section class="module module-narrow module-shallow">
             <h2 class="module-heading">
                 <i class="fa fa-filter"></i>
-                Gemet keywords
+                gemet_keywords
             </h2>
-            <nav aria-label="nested_Tags" id="level">
+            <nav aria-label="gemet_keywords" id="level">
                 <div class="box_">
                     <ul id="myUL" />
                 </div>
@@ -13,10 +13,8 @@
         </section>
     </div>
 </div>
-
-{{ h.treeData_data_xml2(h.get_facet_items_dict("nested_tags", search_facets or c.search_facets)) }}
 <script>
-    
+
     function nodeMarkup(node) {
         var result = Array();
         for (var index = 0; index < node.childNodes.length; index++) {
@@ -24,40 +22,42 @@
             let children = nodeMarkup(item);
             var data = "";
             var caret = "";
-            
+
             if (children.length > 0) {
                 data = `<ul class="nested">
                     ${children.join("\n")}
                     </ul>`;
-                }
-                if (data) {
-                    caret = "caret"
-                } else {
-                    caret = "caret-down"
-                }
-                
-                h = `<li>
+            }
+            if (data) {
+                caret = "caret"
+            } else {
+                caret = "caret-down"
+            }
+
+            // don't need anymore
+            // <a href="?${item.tagName}=${item.getAttribute('name')}">
+            h = `<li>
                     <div class="${caret}">${item.getAttribute('name')}
-                        <a href="?${item.tagName}=${item.getAttribute('name')}">
+                        <a href="?gemet_keywords=${item.getAttribute('name')}">
                             <span class="badge">${item.getAttribute('count')}</span>
                             </a>
                             </div>
                             ${data}
                             </li>`
-                            
-                            result.push(h);
-                        }
-                        return result
-                    }
-                    
-                    let xmlData = {{ h.treeData_data_xml(h.get_facet_items_dict("nested_tags", search_facets or c.search_facets)) | tojson }}
-                    let parser = new DOMParser();
-                    let xmlDoc = parser.parseFromString(xmlData, "text/xml");
-                    
-                    html = nodeMarkup(xmlDoc.documentElement).join("\n");
-                    document.getElementById('myUL').innerHTML = html;
-                    
-                    var toggler = document.getElementsByClassName("caret");
+
+            result.push(h);
+        }
+        return result
+    }
+
+    let xmlData = {{ h.treeData_data_xml_gemet(h.get_facet_items_dict("gemet_keywords", search_facets or c.search_facets), "gemet_keywords") | tojson }};
+    let parser = new DOMParser();
+    let xmlDoc = parser.parseFromString(xmlData, "text/xml");
+
+    html = nodeMarkup(xmlDoc.documentElement).join("\n");
+    document.getElementById('myUL').innerHTML = html;
+
+    var toggler = document.getElementsByClassName("caret");
     var i;
     for (i = 0; i < toggler.length; i++) {
         toggler[i].addEventListener("click", function () {

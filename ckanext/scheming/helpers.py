@@ -503,14 +503,6 @@ def getXML_result(data):
         level += 1
     return result
 
-def counter (column, value, table):
-    count = 0
-    for row in table:
-        if column <= len(row)-1 :
-            if row[column] == value:
-                count += 1
-    return str(count)
-
 def facet_(facet, name):
     # counter via facet
     list = []
@@ -519,10 +511,6 @@ def facet_(facet, name):
             return str(elem['count'])
     
     return str(0)
-
-@helper
-def treeData_data_xml2(facet):
-    return facet_(facet, 'Sverige')
 
 @helper
 def treeData_data_xml(facet):
@@ -534,10 +522,11 @@ def treeData_data_xml(facet):
         if getXML_result(id):
             result.append(getXML_result(id))
 
+    # return result 
     declaration = '<?xml version="1.0" encoding="utf-8"?>'
 
     dico = {}
-    root = ET.Element("laender")
+    root = ET.Element("root")
     ET.ElementTree(root)
     for row_num, row in enumerate(result):
         for column_num, elem in enumerate(row):
@@ -549,59 +538,33 @@ def treeData_data_xml(facet):
     xml_str = ET.tostring(root, encoding="utf-8", method='xml')
     return declaration + xml_str
 
-# a few functions for the treeData function
-def dict_merge(dct, merge_dct):
-    for k, v in merge_dct.iteritems():
-        if (k in dct and isinstance(dct[k], dict) and isinstance(merge_dct[k], collections.Mapping)):
-            dict_merge(dct[k], merge_dct[k])
-        else:
-            dct[k] = merge_dct[k]
-
-def getJSON_result(data):
-    level = 0
-    result = {}
-    allData = []
-    while "level"+str(level) in data:
-        val = data["level"+str(level)]
-        if val != "":
-            allData.append(data["level"+str(level)])
-        level += 1
-
-    allData.reverse()
-
-    for item in allData:
-        result = {item: result}
-
-    return result
-
 @helper
-def treeData_data():
+def treeData_data_xml_gemet(facet, name_facet):
     ckan_loc = LocalCKAN()
-    # ['level1','level0', 'name']
-    data = ckan_loc.action.package_search(include_private=True)
-    result = {}
-    counter = {}
-    level = {}
-    for datasets in data["results"]:
-        level_enum = 0
-        while "level"+str(level_enum) in datasets:
-            data_level = datasets["level"+str(level_enum)]
-            if data_level and data_level not in counter:
-                counter.update({data_level: 1})
-                level.update({data_level: level_enum})
-            elif data_level:
-                counter[data_level] = counter[data_level] + 1
-            level_enum += 1
+    data = ckan_loc.action.package_search(include_private=True, fl=[name_facet])
+    
+    result = []
+    for id in data["results"]:
+        if id.get(name_facet):
+            subresult = []
+            for i in id.get(name_facet):
+                subresult.append(i)
+            result.append(subresult)
+    
+    dico = {}
+    root = ET.Element("root")
+    ET.ElementTree(root)
+    for row_num, row in enumerate(result):
+        for column_num, elem in enumerate(row):
+            if elem not in dico and column_num == 0 and elem and facet_(facet, elem) != "0":
+                dico.update({elem: ET.SubElement(root, "level" + str(column_num), count=facet_(facet, elem), name=elem)})
+            elif elem not in dico and elem and facet_(facet, elem) != "0":
+                dico.update({elem: ET.SubElement(dico[result[row_num][column_num-1]], "level" + str(column_num), count=facet_(facet, elem), name=elem)})
 
-        dict_merge(result, getJSON_result(datasets))
-    return [result, counter, level]
-
-@helper   
-def count(data):
-    i = 0
-    for item in data.values():
-        i += count(item)
-    return max(i, 1)
+    xml_str = ET.tostring(root, encoding="unicode", method='xml')
+    
+    declaration = '<?xml version="1.0" encoding="utf-8"?>'
+    return declaration + xml_str
 
 @helper   
 def get_common_map_config():
