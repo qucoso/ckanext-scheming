@@ -16,10 +16,11 @@
   {%- set display_snippet = 'scheming/display_snippets/' + display_snippet -%}
 {%- endif -%}
 
-{%- if field.field_name in data -%}
+{%- if field.field_name in data or field.field_name == 'level' -%}
   {%- snippet display_snippet,
     field=field,
     data=data,
+    schema=schema,
     errors=errors,
     entity_type=entity_type,
     object_type=object_type

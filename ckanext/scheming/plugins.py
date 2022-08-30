@@ -4,9 +4,11 @@ import os
 import inspect
 import logging
 from functools import wraps
+from re import L
 
 import six
 import yaml
+import json as json_key
 import ckan.plugins as p
 from pylons import config
 
@@ -146,7 +148,9 @@ class _SchemingMixin(object):
             self._schema_urls,
             self.SCHEMA_TYPE_FIELD
         )
+        # log.info(self._schemas)
 
+ 
         self._expanded_schemas = _expand_schemas(self._schemas)
 
     def is_fallback(self):
@@ -202,13 +206,18 @@ class SchemingDatasetsPlugin(p.SingletonPlugin, DefaultDatasetForm,
     p.implements(p.IDatasetForm, inherit=True)
     p.implements(p.IActions)
     p.implements(p.IValidators)
-    p.implements(p.IFacets, inherit=True)
+    # this is required 
+    p.implements(p.IFacets, inherit=False)
+    p.implements(p.IPackageController, inherit=True)
 
     SCHEMA_OPTION = 'scheming.dataset_schemas'
     FALLBACK_OPTION = 'scheming.dataset_fallback'
     SCHEMA_TYPE_FIELD = 'dataset_type'
+    # this the name of the Field
     SCHEMA_FILTER_ORDER = ['organization', 'groups', 'tags', 'res_format', 'license_id']
+    # this is the label of the field
     SCHEMA_FILTER_TITLES = [p.toolkit._('Organizations'), p.toolkit._('Groups'), p.toolkit._('Tags'), p.toolkit._('Formats'), p.toolkit._('License')]
+    
 
     @classmethod
     def _store_instance(cls, self):
@@ -226,10 +235,14 @@ class SchemingDatasetsPlugin(p.SingletonPlugin, DefaultDatasetForm,
     def resource_form(self):
         return 'scheming/package/snippets/resource_form.html'
 
+    # def search_template(self):
+        # return 'scheming/package/snippets/search_form.html'
+
     def package_types(self):
         return list(self._schemas)
 
     def get_filter_config(self):
+        # this iis the function to add the facets to the ckan
         filter_order = config.get('ckanext.scheming.filter_order', '')
         filter_titles = config.get('ckanext.scheming.filter_titles', '')
         if filter_order and filter_titles:
@@ -246,9 +259,11 @@ class SchemingDatasetsPlugin(p.SingletonPlugin, DefaultDatasetForm,
         return facets_ordered
     
     def dataset_facets(self, facets_dict, package_type):
-        #facets_dict['type'] = p.toolkit._('Type')        
+        facets_dict['gemet_keywords'] = p.toolkit._('gemet_keywords')
+
+        return facets_dict
         # Return the updated facet dict.
-        return self.get_filter_config()
+        # return self.get_filter_config()
             
     def organization_facets(self, facets_dict, organization_type, package_type):
         #facets_dict['type'] = p.toolkit._('Type')
@@ -366,6 +381,13 @@ class SchemingDatasetsPlugin(p.SingletonPlugin, DefaultDatasetForm,
         if not hasattr(c, 'licenses'):
             c.licenses = [('', '')] + model.Package.get_license_options()
 
+    # added for Solr
+    def before_index(self, data_dict):
+        keys = json_key.loads(data_dict['gemet_keywords'])
+        logging.error(keys)
+        data_dict['gemet_keywords'] = keys
+        return data_dict
+
 
 def expand_form_composite(data, fieldnames):
     """
@@ -464,7 +486,6 @@ class SchemingOrganizationsPlugin(p.SingletonPlugin, _GroupOrganizationMixin,
             'scheming_organization_schema_show':
                 logic.scheming_organization_schema_show,
         }
-
 
 class SchemingNerfIndexPlugin(p.SingletonPlugin):
     """
@@ -630,7 +651,6 @@ def _expand(schema, field):
     If scheming field f includes a preset value return a new field
     based on the preset with values from f overriding any values in the
     preset.
-
     raises SchemingException if the preset given is not found.
     """
     preset = field.get('preset')
@@ -640,6 +660,7 @@ def _expand(schema, field):
         field = dict(_SchemingMixin._presets[preset], **field)
 
     return field
+
 
 
 def _expand_schemas(schemas):
@@ -672,5 +693,3 @@ def _expand_schemas(schemas):
 
         out[name] = schema
     return out
-
-

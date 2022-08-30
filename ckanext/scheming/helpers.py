@@ -4,10 +4,14 @@ import re
 import datetime
 import pytz
 import json
+import collections
 import six
 import logging
+import lxml.etree as ET
 
 import ckan.logic as logic
+# I have added this library to create the facets for the dataset search
+import ckan.plugins.toolkit as tk
 
 from jinja2 import Environment
 from ckantoolkit import config, _
@@ -503,3 +507,60 @@ def get_link_list_mixed_sources(link_list):
         
     return res
 
+def getXML_result(data):
+    level = 0
+    result = []
+    while "level"+str(level) in data:
+        val = data.get("level"+str(level))
+        if val != "":
+            result.append(val)
+        level += 1
+    return result
+
+def facet_(facet, name):
+    # counter via facet
+    list = []
+    for elem in facet:
+        if elem['name'] == name:
+            return str(elem['count'])
+    
+    return str(0)
+
+@helper
+def treeData_data_xml_gemet(facets, name_facet):
+    facet = facets.get("gemet_keywords").get("items")
+    ckan_loc = LocalCKAN()
+    data = ckan_loc.action.package_search(include_private=True, fl=[name_facet])
+    
+    result = []
+    for id in data["results"]:
+        if id.get(name_facet):
+            subresult = []
+            for i in id.get(name_facet):
+                subresult.append(i)
+            result.append(subresult)
+
+    dico = {}
+    root = ET.Element("root")
+    ET.ElementTree(root)
+    for row_num, row in enumerate(result):
+        for column_num, elem in enumerate(row):
+            if elem not in dico and column_num == 0 and elem and facet_(facet, elem) != "0":
+                dico.update({elem: ET.SubElement(root, "level" + str(column_num), count=facet_(facet, elem), name=elem)})
+            elif elem not in dico and elem and facet_(facet, elem) != "0":
+                dico.update({elem: ET.SubElement(dico[result[row_num][column_num-1]], "level" + str(column_num), count=facet_(facet, elem), name=elem)})
+
+
+    xml_str = ET.tostring(root, encoding="unicode", method='xml')
+    
+    declaration = '<?xml version="1.0" encoding="utf-8"?>'
+    return declaration + xml_str
+
+@helper   
+def get_common_map_config():
+    '''
+        Returns a dict with all configuration options related to the common
+        base map (ie those starting with 'ckanext.spatial.common_map.')
+    '''
+    namespace = 'ckanext.spatial.common_map.'
+    return dict([(k.replace(namespace, ''), v) for k, v in config.items() if k.startswith(namespace)])

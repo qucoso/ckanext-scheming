@@ -1,0 +1,321 @@
+{
+    "scheming_version": 2,
+    "dataset_type": "dataset",
+    "about": "CKAN dataset schema for KlimaKonform",
+    "about_url": "https://github.com/GeoinformationSystems/ckanext-scheming",
+    "dataset_fields": [
+        {
+            "field_name": "title",
+            "label": "Title",
+            "preset": "title",
+            "form_placeholder": "eg. A descriptive title"
+        },
+        {
+            "field_name": "name",
+            "label": "Identifier",
+            "preset": "name",
+            "form_placeholder": "eg. my-dataset"
+        },
+        {
+            "field_name": "notes",
+            "label": "Description",
+            "preset": "notes",
+            "form_placeholder": "Some useful notes about the data"
+        },
+        {
+            "field_name": "documentation",
+            "label": "Documentation",
+            "preset": "single_link",
+            "help_text": "eg. link to publication"
+        },
+        {
+            "field_name": "contact_name",
+            "label": "Contact Point - Name",
+            "preset": "contact_name",					 
+            "form_placeholder": "Person or Organization"
+        },
+        {
+            "field_name": "contact_uri",
+            "label": "Contact Point - ORCID",
+            "preset": "single_link",
+            "help_text": "According ORCID as link, leave blank otherwise"
+        },
+        {
+            "field_name": "alternate_identifier",
+            "label": "Dataset DOI",
+            "preset": "single_link",
+            "from_placeholder": "insert DOI of the dataset if available",
+            "help_text": "e.g. https://doi.org/10.7283/T5MW2F2D"
+        },
+        {
+            "field_name": "url",
+            "label": "Information Website",
+            "preset": "single_link",
+            "help_text": "links to project website or dataset's page"
+        },
+        {
+            "field_name": "tag_string",
+            "label": "Keywords",
+            "preset": "tags",
+            "form_placeholder": "eg. economy, mental health, government"
+        },
+        {
+            "field_name": "gemet_keywords",
+            "label": "Gemet Keywords",
+            "help_text": "Select at least one Gemet Keyword!",
+            "preset": "gemet_preset"
+        },
+        {
+            "field_name": "theme",
+            "label": "Theme / Category",
+            "help_text": "Select at least one INSPIRE theme. Further information at: http://inspire.ec.europa.eu/theme",
+            "preset": "multiple_checkbox",
+            "required": "true",
+            "choices": [
+                {
+                    "value": "http://inspire.ec.europa.eu/theme/ad",
+                    "label": "Addresses"
+                },
+                {
+                    "value": "http://inspire.ec.europa.eu/theme/au",
+                    "label": "Administrative units"
+                },
+                {
+                    "value": "http://inspire.ec.europa.eu/theme/af",
+                    "label": "Agricultural and aquaculture facilities"
+                },
+                {
+                    "value": "http://inspire.ec.europa.eu/theme/am",
+                    "label": "Area management/restriction/regulation zones and reporting units"
+                },
+                {
+                    "value": "http://inspire.ec.europa.eu/theme/ac",
+                    "label": "Atmospheric conditions"
+                },
+                {
+                    "value": "http://inspire.ec.europa.eu/theme/br",
+                    "label": "Bio-geographical regions"
+                },
+                {
+                    "value": "http://inspire.ec.europa.eu/theme/bu",
+                    "label": "Buildings"
+                },
+                {
+                    "value": "http://inspire.ec.europa.eu/theme/cp",
+                    "label": "Cadastral parcels"
+                },
+                {
+                    "value": "http://inspire.ec.europa.eu/theme/rs",
+                    "label": "Coordinate reference systems"
+                },
+                {
+                    "value": "http://inspire.ec.europa.eu/theme/el",
+                    "label": "Elevation"
+                },
+                {
+                    "value": "http://inspire.ec.europa.eu/theme/er",
+                    "label": "Energy resources"
+                },
+                {
+                    "value": "http://inspire.ec.europa.eu/theme/ef",
+                    "label": "Environmental monitoring facilities"
+                },
+                {
+                    "value": "http://inspire.ec.europa.eu/theme/gg",
+                    "label": "Geographical grid systems"
+                },
+                {
+                    "value": "http://inspire.ec.europa.eu/theme/gn",
+                    "label": "Geographical names"
+                },
+                {
+                    "value": "http://inspire.ec.europa.eu/theme/ge",
+                    "label": "Geology"
+                },
+                {
+                    "value": "http://inspire.ec.europa.eu/theme/hb",
+                    "label": "Habitats and biotopes"
+                },
+                {
+                    "value": "http://inspire.ec.europa.eu/theme/hh",
+                    "label": "Human health and safety"
+                },
+                {
+                    "value": "http://inspire.ec.europa.eu/theme/hy",
+                    "label": "Hydrography"
+                },
+                {
+                    "value": "http://inspire.ec.europa.eu/theme/lc",
+                    "label": "Land cover"
+                },
+                {
+                    "value": "http://inspire.ec.europa.eu/theme/lu",
+                    "label": "Land use"
+                },
+                {
+                    "value": "http://inspire.ec.europa.eu/theme/mf",
+                    "label": "Meteorological geographical features"
+                },
+                {
+                    "value": "http://inspire.ec.europa.eu/theme/mr",
+                    "label": "Mineral resources"
+                },
+                {
+                    "value": "http://inspire.ec.europa.eu/theme/nz",
+                    "label": "Natural risk zones"
+                },
+                {
+                    "value": "http://inspire.ec.europa.eu/theme/of",
+                    "label": "Oceanographic geographical features"
+                },
+                {
+                    "value": "http://inspire.ec.europa.eu/theme/oi",
+                    "label": "Orthoimagery"
+                },
+                {
+                    "value": "http://inspire.ec.europa.eu/theme/pd",
+                    "label": "Population distribution — demography"
+                },
+                {
+                    "value": "http://inspire.ec.europa.eu/theme/pf",
+                    "label": "Production and industrial facilities"
+                },
+                {
+                    "value": "http://inspire.ec.europa.eu/theme/ps",
+                    "label": "Protected sites"
+                },
+                {
+                    "value": "http://inspire.ec.europa.eu/theme/sr",
+                    "label": "Sea regions"
+                },
+                {
+                    "value": "http://inspire.ec.europa.eu/theme/so",
+                    "label": "Soil"
+                },
+                {
+                    "value": "http://inspire.ec.europa.eu/theme/sd",
+                    "label": "Species distribution"
+                },
+                {
+                    "value": "http://inspire.ec.europa.eu/theme/su",
+                    "label": "Statistical units"
+                },
+                {
+                    "value": "http://inspire.ec.europa.eu/theme/tn",
+                    "label": "Transport networks"
+                },
+                {
+                    "value": "http://inspire.ec.europa.eu/theme/us",
+                    "label": "Utility and governmental services"
+                }
+            ]
+        },
+        {
+            "field_name": "spatial",
+            "label": "Spatial Coverage",
+            "preset": "spatial_extent",
+            "required": "false",
+            "form_placeholder": "Paste a valid GeoJSON geometry",
+            "help_text": "Draw and edit the dataset extent as rectangles on the map, or paste a GeoJSON Polygon or Multipolygon geometry below, or create a bounding box from coordinates"
+        },
+        {
+            "field_name": "conforms_to",
+            "label": "Coordinate Reference System",
+            "preset": "single_link",
+            "form_placeholder": "http://www.opengis.net/def/crs/EPSG/0/4326",
+            "help_text": "Provide link to OGC definition of the CRS, http://docs.opengeospatial.org/DRAFTS/18-058.html#_crs_identifier_list, e.g. http://www.opengis.net/def/crs/EPSG/0/4326"
+        },
+        {
+            "field_name": "spatial_resolution",
+            "label": "Spatial Resolution",
+            "required_if_value_in": "spatial_resolution_type",
+            "preset": "spatial_resolution",
+            "help_text": "Spatial Resolution (the unit is determined by the resolution type)"
+        },
+        {
+            "field_name": "spatial_resolution_type",
+            "label": "Spatial Resolution Measured",
+            "required_if_value_in": "spatial_resolution",
+            "preset": "spatial_resolution_type",
+            "help_text": "In meters: This property refers to the minimum spatial separation resolvable in a Dataset, measured in metres.\nAs angular scale: Spatial resolution expressed as equivalent scale [ISO-19115], [ISO-19115-1], by using a representative fraction (e.g., 1:1,000, 1:1,000,000).\nAs angular distance: Spatial resolution expressed as angular distance [ISO-19115-1], by using a decimal degree.\nAs vertical distance: Spatial resolution expressed as vertical distance [ISO-19115-1]."
+        },
+        {
+            "field_name": "temporal_start",
+            "label": "Temporal Coverage Start",
+            "preset": "date_range_start"
+        },
+        {
+            "field_name": "temporal_end",
+            "label": "Temporal Coverage End",
+            "preset": "date_range_end"
+        },
+        {
+            "field_name": "temporal_resolution",
+            "label": "Temporal Resolution",
+            "preset": "textinput",
+            "help_text": "E.g. 'P2Y3M20D' describes a period 2 years, 3 months and 20 days or 'P1D' describes a period of 1 day"
+        },
+        {
+            "field_name": "is_version_of",
+            "label": "Is Version of",
+            "preset": "single_dataset_ref",
+            "help_text": "Insert according dataset's identifier. A related resource of which the described resource is a version, edition, or adaptation. Changes in version imply substantive changes in content rather than differences in format."
+        },
+        {
+            "field_name": "related_resource",
+            "label": "Parent Dataset",
+            "preset": "single_dataset_ref",
+            "help_text": "A resource with an unspecified relationship to the cataloged item. https://www.w3.org/TR/vocab-dcat-2/#Property:resource_relation"
+        },
+        {
+            "field_name": "was_derived_from",
+            "label": "Derived from",
+            "preset": "multi_link",
+            "help_text": "The dataset from which the current dataset was derived. Provide the URL of the according datasets. In case of multiple Entries, split with comma \",\"."
+        },
+        {
+            "field_name": "owner_org",
+            "label": "Organization",
+            "preset": "owner_org"
+        },
+        {
+            "field_name": "license_id",
+            "label": "Dataset License",
+            "preset": "textinput",
+            "form_placeholder": "A legal document giving official permission to do something with the resource.",
+            "help_text": "Recommended best practice is to identify the license using a URI. Examples of such licenses can be found at http://creativecommons.org/licenses/."
+        }
+    ],
+    "resource_fields": [
+        {
+            "field_name": "url",
+            "label": "URL",
+            "preset": "resource_url"
+        },
+        {
+            "field_name": "name",
+            "label": "Name",
+            "validators": "if_empty_same_as(url) unicode",
+            "form_placeholder": "leave blank to use resource file name"
+        },
+        {
+            "field_name": "description",
+            "label": "Description",
+            "form_snippet": "markdown.html",
+            "form_placeholder": "Some useful notes about the resource"
+        },
+        {
+            "field_name": "license",
+            "label": "Resource License",
+            "preset": "textinput",
+            "form_placeholder": "A legal document giving official permission to do something with the resource.",
+            "help_text": "Recommended best practice is to identify the license using a URI. Examples of such licenses can be found at http://creativecommons.org/licenses/."
+        },
+        {
+            "field_name": "format",
+            "label": "Format",
+            "preset": "resource_format",
+            "form_placeholder": "eg. CSV, XML or JSON"
+        }
+    ]
+}
