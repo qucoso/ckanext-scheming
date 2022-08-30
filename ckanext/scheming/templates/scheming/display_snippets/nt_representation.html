@@ -1,9 +1,0 @@
-{% if h.combineLevels(data)|length %}
-    <ul class="tag-list">
-        {% for data in h.combineLevels(data) %}
-        <li>
-            <a class="tag" href="/dataset/?level{{ loop.index-1 }}={{ data }}">{{ data }}</a>
-        </li>
-        {% endfor %}
-    </ul>
-{% endif %}

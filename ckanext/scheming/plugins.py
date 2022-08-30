@@ -259,13 +259,8 @@ class SchemingDatasetsPlugin(p.SingletonPlugin, DefaultDatasetForm,
         return facets_ordered
     
     def dataset_facets(self, facets_dict, package_type):
-        # the test factes
-        facets_dict['nested_tags'] = p.toolkit._('nested_tags')
         facets_dict['gemet_keywords'] = p.toolkit._('gemet_keywords')
-        # facets_dict['level0'] = p.toolkit._('level0')
-        # facets_dict['level1'] = p.toolkit._('level1')
-        # facets_dict['level2'] = p.toolkit._('level2')
-        
+
         return facets_dict
         # Return the updated facet dict.
         # return self.get_filter_config()
@@ -386,7 +381,7 @@ class SchemingDatasetsPlugin(p.SingletonPlugin, DefaultDatasetForm,
         if not hasattr(c, 'licenses'):
             c.licenses = [('', '')] + model.Package.get_license_options()
 
-    # added by ko
+    # added for Solr
     def before_index(self, data_dict):
         keys = json_key.loads(data_dict['gemet_keywords'])
         logging.error(keys)
@@ -500,7 +495,7 @@ class SchemingNerfIndexPlugin(p.SingletonPlugin):
     """
     p.implements(p.IPackageController, inherit=True)
 
-    def before_index(self, data_dict):
+     def before_index(self, data_dict):
         schemas = SchemingDatasetsPlugin.instance._expanded_schemas
         if data_dict['type'] not in schemas:
             return data_dict
@@ -508,7 +503,7 @@ class SchemingNerfIndexPlugin(p.SingletonPlugin):
         for d in schemas[data_dict['type']]['dataset_fields']:
             if d['field_name'] not in data_dict:
                 continue
-            if 'repeating_subfields' in d or 'gemet_keywords' in d:
+            if 'repeating_subfields' in d:
                 data_dict[d['field_name']] = json.dumps(data_dict[d['field_name']])
 
         return data_dict
@@ -656,7 +651,6 @@ def _expand(schema, field):
     If scheming field f includes a preset value return a new field
     based on the preset with values from f overriding any values in the
     preset.
-
     raises SchemingException if the preset given is not found.
     """
     preset = field.get('preset')
@@ -664,7 +658,9 @@ def _expand(schema, field):
         if preset not in _SchemingMixin._presets:
             raise SchemingException('preset \'{}\' not defined'.format(preset))
         field = dict(_SchemingMixin._presets[preset], **field)
+
     return field
+
 
 
 def _expand_schemas(schemas):
@@ -674,29 +670,15 @@ def _expand_schemas(schemas):
     out = {}
     for name, original in schemas.items():
         schema = dict(original)
-
-
-        # to add the extrafields for the structure of the tags
-        for field in schema['dataset_fields']:
-            if 'choise_nt' in field:
-                for i in range(0, (count(field["choise_nt"])+1)):
-                    lvel = {
-                        "field_name": "",
-                        "label": "level",
-                        "preset": "nt_empty_preset"
-                    }
-                    lvel["field_name"] = "level" + str(i)
-                    schema["dataset_fields"].append(lvel)
-
         for grouping in ('fields', 'dataset_fields', 'resource_fields'):
             if grouping not in schema:
                 continue
-                
+
             schema[grouping] = [
                 _expand(schema, field)
                 for field in schema[grouping]
             ]
-            
+
             for field in schema[grouping]:
                 if 'repeating_subfields' in field:
                     field['repeating_subfields'] = [
@@ -711,9 +693,3 @@ def _expand_schemas(schemas):
 
         out[name] = schema
     return out
-
-def count(d):
-    # counts the levels of a dict
-    return max(count(v) if isinstance(v,dict) else 0 for v in d.values()) + 1
-
-

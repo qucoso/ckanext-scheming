@@ -66,35 +66,6 @@
             "preset": "gemet_preset"
         },
         {
-            "field_name": "level",
-            "label": "Nested Tags",
-            "help_text": "Select at least one tag!",
-            "preset": "nt_type_preset",
-            "choise_nt": {
-                "Deutschland": {
-                    "Niedersachsen": [
-                        "Braunschweig"
-                    ],
-                    "Sachsen": [
-                        "Dresden"
-                    ]
-                },
-                "Sverige": {
-                    "Dalarna": [
-                        "Mora",
-                        "Åre"
-                    ],
-                    "Gävleborg": [
-                        "Gävle"
-                    ],
-                    "Östergötland": [
-                        "Vadstena",
-                        "Linköping"
-                    ]
-                }
-            }
-        },
-        {
             "field_name": "theme",
             "label": "Theme / Category",
             "help_text": "Select at least one INSPIRE theme. Further information at: http://inspire.ec.europa.eu/theme",

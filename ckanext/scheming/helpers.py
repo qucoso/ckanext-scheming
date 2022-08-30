@@ -473,26 +473,6 @@ def datasets_available(ds_type):
     result = logic.get_action(u'package_search')(context, data_dict)
     return result['results']
 
-@helper
-def combineLevels(data):
-    # merges all levels
-    data_comb =[]
-    level_enum = 0
-    name = 'level'+str(level_enum)
-    try:
-        if data[name]: 
-            while (name in data):
-                data_comb.append(data[name])
-                level_enum +=1
-                name = 'level'+str(level_enum)
-            return data_comb
-        else:
-            return []
-    except KeyError:
-        return []
-
-# a few functions for the treeData_XML function
-
 def getXML_result(data):
     level = 0
     result = []
@@ -513,32 +493,6 @@ def facet_(facet, name):
     return str(0)
 
 @helper
-def treeData_data_xml(facet):
-    ckan_loc = LocalCKAN()
-    data = ckan_loc.action.package_search(include_private=True)
-
-    result = []
-    for id in data["results"]:
-        if getXML_result(id):
-            result.append(getXML_result(id))
-
-    # return result 
-    declaration = '<?xml version="1.0" encoding="utf-8"?>'
-
-    dico = {}
-    root = ET.Element("root")
-    ET.ElementTree(root)
-    for row_num, row in enumerate(result):
-        for column_num, elem in enumerate(row):
-            if elem not in dico and column_num == 0 and elem and facet_(facet, elem) != "0":
-                dico.update({elem: ET.SubElement(root, "level" + str(column_num), count=facet_(facet, elem), name=elem)})
-            elif elem not in dico and elem and facet_(facet, elem) != "0":
-                dico.update({elem: ET.SubElement(dico[result[row_num][column_num-1]], "level" + str(column_num), count=facet_(facet, elem), name=elem)})
-
-    xml_str = ET.tostring(root, encoding="utf-8", method='xml')
-    return declaration + xml_str
-
-@helper
 def treeData_data_xml_gemet(facets, name_facet):
     facet = facets.get("gemet_keywords").get("items")
     ckan_loc = LocalCKAN()
@@ -551,19 +505,7 @@ def treeData_data_xml_gemet(facets, name_facet):
             for i in id.get(name_facet):
                 subresult.append(i)
             result.append(subresult)
-    
-    # dico = {}
-    # root = ET.Element("root")
-    # ET.ElementTree(root)
-    # try:
-    #     for row_num, row in enumerate(result):
-    #         for column_num, elem in enumerate(row):
-    #             if elem not in dico and column_num == 0 and elem and facet_(facet, elem) != "0":
-    #                 dico.update({elem: ET.SubElement(root, "level" + str(column_num), count=facet_(facet, elem), name=elem)})
-    #             elif elem not in dico and elem and facet_(facet, elem) != "0":
-    #                 dico.update({elem: ET.SubElement(dico[result[row_num][column_num-1]], "level" + str(column_num), count=facet_(facet, elem), name=elem)})
-    # except KeyError:
-    #     xml_str = ET.tostring(root, encoding="unicode", method='xml')
+
     dico = {}
     root = ET.Element("root")
     ET.ElementTree(root)

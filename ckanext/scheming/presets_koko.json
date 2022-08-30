@@ -152,20 +152,6 @@
 			}
 		},
 		{
-			"preset_name": "nt_type_preset",
-			"values": {
-				"form_snippet": "nt_request.html",
-				"display_snippet": "nt_representation.html"
-			}
-		},
-		{
-			"preset_name": "nt_empty_preset",
-			"values": {
-				"form_snippet": "nt_empty.html",
-				"display_snippet": "nt_empty.html"
-			}
-		},
-		{
 			"preset_name": "date_range_start",
 			"values": {
 				"validators": "ignore_missing unicode",
