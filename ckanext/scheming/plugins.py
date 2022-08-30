@@ -262,6 +262,7 @@ class SchemingDatasetsPlugin(p.SingletonPlugin, DefaultDatasetForm,
         # the test factes
         facets_dict['nested_tags'] = p.toolkit._('nested_tags')
         facets_dict['gemet_keywords'] = p.toolkit._('gemet_keywords')
+        facets_dict['theme'] = p.toolkit._('theme')
         # facets_dict['level0'] = p.toolkit._('level0')
         # facets_dict['level1'] = p.toolkit._('level1')
         # facets_dict['level2'] = p.toolkit._('level2')
@@ -388,9 +389,9 @@ class SchemingDatasetsPlugin(p.SingletonPlugin, DefaultDatasetForm,
 
     # added by ko
     def before_index(self, data_dict):
-        keys = json_key.loads(data_dict['gemet_keywords'])
-        logging.error(keys)
-        data_dict['gemet_keywords'] = keys
+        # Unflatten a flattened dict for Solr
+        data_dict['gemet_keywords'] = json_key.loads(data_dict['gemet_keywords'])
+        data_dict['theme'] = json_key.loads(data_dict['theme'])
         return data_dict
 
 
