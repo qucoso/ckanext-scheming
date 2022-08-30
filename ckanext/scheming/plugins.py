@@ -260,6 +260,7 @@ class SchemingDatasetsPlugin(p.SingletonPlugin, DefaultDatasetForm,
     
     def dataset_facets(self, facets_dict, package_type):
         facets_dict['gemet_keywords'] = p.toolkit._('gemet_keywords')
+        facets_dict['theme'] = p.toolkit._('theme')
 
         return facets_dict
         # Return the updated facet dict.
@@ -383,9 +384,9 @@ class SchemingDatasetsPlugin(p.SingletonPlugin, DefaultDatasetForm,
 
     # added for Solr
     def before_index(self, data_dict):
-        keys = json_key.loads(data_dict['gemet_keywords'])
-        logging.error(keys)
-        data_dict['gemet_keywords'] = keys
+        # Unflatten a flattened dict for Solr|
+        data_dict['gemet_keywords'] = json_key.loads(data_dict['gemet_keywords'])
+        data_dict['theme'] = json_key.loads(data_dict['theme'])
         return data_dict
 
 
