@@ -105,25 +105,9 @@ is_required=h.scheming_field_required(field)
     let linkTag = searchWrapper.querySelector("a");
     let webLink;
     
-    // adds the preselected value
-    // var choices = {#{ field["gemet_keyword"]| tojson | safe }#};
-    // var choices = {#{ field["gemet_keywords"] }#};
-    // console.warn(choices);
-    // if (choices){
-    //     inputBox.value = choices;
-    // }
-
-    var delayTimer;
-    function doSearch(input) {
-        clearTimeout(delayTimer);
-        delayTimer = setTimeout(function () {
-            showResults(input)
-        }, 500);
-    }
-
     // if user press any key and release
     inputBox.onkeyup = (e) => {
-        let userData = e.target.value; //user enetered data
+        let userData = e.target.value; //user entered data
         if (userData) {
             let emptyArray = [];
             var url_keyword = `https://www.eionet.europa.eu/gemet/getConceptsMatchingKeyword?keyword=${userData}&search_mode=4&thesaurus_uri=http://www.eionet.europa.eu/gemet/concept/&language=de`;
@@ -161,8 +145,7 @@ is_required=h.scheming_field_required(field)
     function showSuggestions(list) {
         let listData;
         if (!list.length) {
-            userValue = inputBox.value;
-            listData = `<li>${userValue}</li>`;
+            searchWrapper.classList.remove("active"); 
         } else {
             listData = list.join('');
         }
