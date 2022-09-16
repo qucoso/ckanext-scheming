@@ -97,6 +97,21 @@ To use KlimaKonform metadata scheme set the following in your ``/etc/ckan/defaul
 	# Define preset files to be used
 	scheming.presets = ckanext.scheming:presets_klimakonform.json 
 
+To use KlimaKonform metadata scheme with gemet_keywords set the following in your ``/etc/ckan/default/ckan.ini``::
+
+	# Define scheming file to be used
+	scheming.dataset_schemas = ckanext.scheming:dataset_gemet.json
+	# Define preset files to be used
+	scheming.presets = ckanext.scheming:presets_gemet.json 
+
+	# and add a new field with the name 'gemet_keywords' for the current Solr scheme in the nodes "fields":
+```xml
+<field name="gemet_keywords" type="string" indexed="true" stored="true" multiValued="true"/>
+```
+	# restart Solr and rebuild the index.
+	sudo systemctl restart solr.service 
+	ckan -c /etc/ckan/default/ckan.ini search-index rebuild
+
 To use GeoKur metadata scheme set the following in your ``/etc/ckan/default/ckan.ini``::
 
 	# Define scheming file to be used
